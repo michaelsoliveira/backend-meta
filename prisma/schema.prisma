@@ -7,7 +7,7 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Aluno {
-    id          String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-    nome        String? @db.VarChar(50)
+model Tarefa {
+    id          String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+    descricao   String? @db.VarChar(50)
 }
