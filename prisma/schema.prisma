@@ -9,8 +9,71 @@ datasource db {
     extensions = [uuidOssp(map: "uuid-ossp")]
 }
 
-model Tarefa {
+enum TipoPessoa {
+    F
+    J
+}
+
+model Estado {
+    id      String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+    uf      String
+    nome    String
+    ddd     Int?    @db.SmallInt
+    endereco    Endereco[]
+
+    @@map("estado")
+}
+
+model Endereco {
+    id      String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+    created_at  DateTime @default(now()) @db.Timestamp(6)
+    updated_at  DateTime @default(now()) @db.Timestamp(6)
+    cep         String? @db.VarChar(8)
+    logradouro  String? @db.VarChar(50)
+    municipio   String? @db.VarChar(8)
+    complemento      String? @db.VarChar(8)
+    bairro         String? @db.VarChar(8)
+    id_estado      String? @db.Uuid
+    estado         Estado? @relation(fields: [id_estado], references: [id])
+    pessoa         Pessoa[]
+
+    @@map("endereco")
+}
+
+model Pessoa {
     id          String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-    descricao   String? @db.VarChar(50)
-    @@map("tarefa")
+    created_at  DateTime @default(now()) @db.Timestamp(6)
+    updated_at  DateTime @default(now()) @db.Timestamp(6)
+    tipo        TipoPessoa  @default(F)
+    id_endereco String? @db.Uuid
+    endereco    Endereco? @relation(fields: [id_endereco], references: [id])
+    pessoa_fisica   PessoaFisica?
+    pessoa_juridica   PessoaJuridica?
+    @@map("pessoa")
+}
+
+model PessoaFisica {
+    id          String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+    nome        String? @db.VarChar(100)
+    rg          String? @db.VarChar(30)
+    cpf         String? @unique @db.VarChar(14)
+    data_nascimento DateTime @db.Date
+    id_pessoa   String? @unique @db.Uuid
+    pessoa      Pessoa? @relation(fields: [id_pessoa], references: [id])
+
+    @@map("pessoa_fisica")
+}
+
+model PessoaJuridica {
+    id          String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+    nome_fantasia        String? @db.VarChar(100)
+    razao_social        String? @db.VarChar(100)
+    ins_estadual          String? @db.VarChar(40)
+    ins_municipal          String? @db.VarChar(40)
+    cnpj         String? @unique @db.VarChar(20)
+    data_constituicao DateTime @db.Date
+    id_pessoa   String? @unique @db.Uuid
+    pessoa      Pessoa? @relation(fields: [id_pessoa], references: [id])
+
+    @@map("pessoa_juridica")
 }
