@@ -1,3 +1,4 @@
+import * as bcrypt from "bcryptjs"
 import { User } from "@prisma/client";
 import { prismaClient } from "../database/prismaClient";
 
@@ -21,11 +22,12 @@ class UserService {
             throw new Error("Já existe um usuário cadastrada com este nome.");
         }
 
+        const passwordHash = await bcrypt.hash(password, 10)
         const user = await prismaClient.user.create({
             data: {
                 username,
                 email,
-                password
+                password: passwordHash
             }
         });
 
