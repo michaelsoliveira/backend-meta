@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
-import tarefaService from "../services/TarefaService";
+import userService from "../services/UserService";
 import { prismaClient } from "../database/prismaClient";
 
-export class TarefaController {
+export class UserController {
     async store(request: Request, response: Response) : Promise<Response> {
         try {
-            const tarefa = await tarefaService.create(request.body);
+            const user = await userService.create(request.body);
             return response.json({
                 error: false,
-                data: tarefa,
-                message: `Tarefa ${tarefa.descricao} foi cadastrada com SUCESSO!!!`
+                data: user,
+                message: `User ${user.username} foi cadastrada com SUCESSO!!!`
             })
         } catch (error: any) {
             console.log(error.message);
@@ -23,11 +23,11 @@ export class TarefaController {
     async update(request: Request, response: Response) : Promise<any> {
         const { id } = request.params
         try {
-            const tarefa = await tarefaService.update(id, request.body);
+            const user = await userService.update(id, request.body);
             return response.json({
                 error: false,
-                data: tarefa,
-                message: `Tarefa ${tarefa.descricao} foi atualizada com SUCESSO!!!`
+                data: user,
+                message: `User ${user.username} foi atualizada com SUCESSO!!!`
             })
         } catch (error: any) {
             console.log(error.message);
@@ -39,11 +39,11 @@ export class TarefaController {
     }
     async findAll(request: Request, response: Response) : Promise<any> {
         try {
-            const tarefas = await tarefaService.getAll();
+            const users = await userService.getAll();
             
             return response.json({
                 error: false,
-                data: tarefas
+                data: users
             })
         } catch (error: any) {
             return response.json({
@@ -55,7 +55,7 @@ export class TarefaController {
 
     async delete(request: Request, response: Response) : Promise<any> {
         const { id } = request.params;
-        const res: any = await tarefaService.delete(id);
+        const res: any = await userService.delete(id);
         return response.status(200).json({
             error: res.error,
             message: res.message
@@ -65,9 +65,9 @@ export class TarefaController {
     async findOne(request: Request, response: Response) : Promise<any> {
         const { id } = request.params as any;
         try {
-            const tarefa = await tarefaService.findById(id);
+            const user = await userService.findById(id);
             return response.status(200).json({
-                tarefa
+                user
             })
         } catch(e: any) {
             return {
