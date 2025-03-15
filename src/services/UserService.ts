@@ -27,7 +27,7 @@ class UserService {
             data: {
                 username,
                 email,
-                password: passwordHash
+                password: passwordHash 
             }
         });
 
