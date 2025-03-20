@@ -55,27 +55,26 @@ model Pessoa {
 }
 
 model PessoaFisica {
-    id          String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+    id_pessoa   String @id @db.Uuid
     nome        String? @db.VarChar(100)
     rg          String? @db.VarChar(30)
     cpf         String? @unique @db.VarChar(14)
     data_nascimento DateTime @db.Date
-    id_pessoa   String? @unique @db.Uuid
-    pessoa      Pessoa? @relation(fields: [id_pessoa], references: [id])
+    
+    pessoa      Pessoa @relation(fields: [id_pessoa], references: [id])
 
     @@map("pessoa_fisica")
 }
 
 model PessoaJuridica {
-    id          String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+    id_pessoa   String @id @db.Uuid
     nome_fantasia        String? @db.VarChar(100)
     razao_social        String? @db.VarChar(100)
     ins_estadual          String? @db.VarChar(40)
     ins_municipal          String? @db.VarChar(40)
     cnpj         String? @unique @db.VarChar(20)
     data_constituicao DateTime @db.Date
-    id_pessoa   String? @unique @db.Uuid
-    pessoa      Pessoa? @relation(fields: [id_pessoa], references: [id])
+    pessoa      Pessoa @relation(fields: [id_pessoa], references: [id])
 
     @@map("pessoa_juridica")
 }
@@ -86,7 +85,7 @@ model User {
     updated_at  DateTime @default(now()) @db.Timestamp(6)
     username    String  @db.VarChar
     email       String? @unique @db.VarChar
-    password    String? @db.VarChar
+    password    String @db.VarChar
     image       String? @db.VarChar
     email_verified  DateTime?
     pessoa      Pessoa[]
