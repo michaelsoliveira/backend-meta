@@ -1,7 +1,6 @@
 import { User } from '@prisma/client';
 import * as jwt from 'jsonwebtoken'
-const SECRET = process.env.JWT_SECRET || 'secret123';
-
+const SECRET = process.env.JWT_SECRET || 'secret';
 export type UserStoredToken = {
     id: string;
     email: string;
