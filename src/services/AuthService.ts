@@ -16,7 +16,7 @@ class AuthService {
     const isMatch = await bcrypt.compareSync(password, user?.password);
     if (!isMatch) throw new Error('A senha informada está incorreta');
 
-    return { ...user, token: generateToken(user) };
+    return { ...user, access_token: generateToken(user) };
   }
 }
 

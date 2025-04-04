@@ -11,7 +11,7 @@ export class AuthController {
             return response.json({
                 error: false,
                 message: null,
-                ...user
+                user
             })
         } catch (error: any) {
             return response.json({
