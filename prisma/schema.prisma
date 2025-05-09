@@ -51,6 +51,7 @@ model Pessoa {
     pessoa_juridica   PessoaJuridica?
     id_user   String? @db.Uuid
     user      User? @relation(fields: [id_user], references: [id])
+    cliente     Cliente[]
     @@map("pessoa")
 }
 
@@ -59,11 +60,18 @@ model PessoaFisica {
     nome        String? @db.VarChar(100)
     rg          String? @db.VarChar(30)
     cpf         String? @unique @db.VarChar(14)
-    data_nascimento DateTime @db.Date
+    data_nascimento DateTime? @db.Date
     
     pessoa      Pessoa @relation(fields: [id_pessoa], references: [id])
 
     @@map("pessoa_fisica")
+}
+
+model Cliente {
+    id      String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+    pessoa_id       String @db.Uuid
+    pessoa  Pessoa @relation(fields: [pessoa_id], references: [id])
+    @@map("cliente")
 }
 
 model PessoaJuridica {
